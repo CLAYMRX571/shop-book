@@ -3,8 +3,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import RegisterSerializer
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from django.shortcuts import render
+from rest_framework import status, serializers
 # Create your views here.
 
 class RegisterView(TokenObtainPairView):
@@ -36,8 +38,9 @@ class ProfileUpdateView(APIView):
 
     def put(self, request, *args, **kwargs):
         user = request.user
-        user_data = {
-            "username": user.username,
-            "email": user.email,
-        }
-        return Response(user_data)
+        serializer = RegisterSerializer(user, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
