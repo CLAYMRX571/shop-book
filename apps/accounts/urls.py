@@ -5,7 +5,7 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
-from apps.accounts.views import RegisterView, LogoutView, ProfileView, ProfileUpdateView
+from apps.accounts.views import RegisterView, LogoutView, ProfileView, ProfileUpdateView, ListUserView, DeleteUserView, OrderListView, StatsView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -31,4 +31,11 @@ urlpatterns += [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('profile/update/', ProfileUpdateView.as_view(), name='update'),
+]
+
+urlpatterns += [
+    path('list/', ListUserView.as_view(), name='list'),
+    path('delete/<int:id>/', DeleteUserView.as_view(), name='delete'),
+    path('orders/', OrderListView.as_view(), name='order'),
+    path('stats/', StatsView.as_view(), name='stats'),
 ]
