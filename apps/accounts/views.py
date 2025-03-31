@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from django.shortcuts import render
 from rest_framework import status, serializers
+from apps.order.models import Order
+from apps.order.serializers import OrderSerializer
 # Create your views here.
 
 class RegisterView(TokenObtainPairView):

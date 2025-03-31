@@ -1,5 +1,5 @@
 from .serializers import OrderSerializer, StatusSerializer, HistorySerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
@@ -54,6 +54,6 @@ class HistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        histories = History.objects.filter(user=request.user)
-        serializer = HistorySerializer(histories, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        orders = Order.objects.filter(user=request.user).order_by('-created_at')
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)

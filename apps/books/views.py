@@ -4,7 +4,9 @@ from rest_framework.views import APIView, View
 from rest_framework.response import Response
 from django.http import JsonResponse
 from django.shortcuts import render
+from rest_framework import status
 from .models import Book
+from .paginations import MyCursorPagination 
 
 class BookAllView(APIView):
     permission_classes = [AllowAny]
@@ -12,6 +14,7 @@ class BookAllView(APIView):
     def get(self, request):
         books = Book.objects.all()
         serializers = BookSerializer(books, many=True)
+        pagination_class = MyCursorPagination
         return Response(serializers.data)
 
 class BookCreateView(APIView):
